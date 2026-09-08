@@ -127,8 +127,7 @@ struct Asteroid : public sf::Drawable {
 struct Bullet : public sf::Drawable {
     Bullet(sf::Vector2f startPosition, sf::Vector2f bulletVelocity)
         : velocity(bulletVelocity),
-          lifetime(3.0f)  // Bullets live for 3 seconds
-          ,
+          lifetime(3.0f),  // Bullets live for 3 seconds
           isAlive(true) {
         shape.setRadius(BULLET_RADIUS);
         shape.setFillColor(sf::Color::Red);
@@ -329,7 +328,7 @@ private:
         for (auto& asteroid : mAsteroids) {
             if (!asteroid.isAlive) continue;
             // =====
-            // TODO: Use Circle-Circle intersection test (circlesIntersect)
+            // Use Circle-Circle intersection test (circlesIntersect)
             // to determine if the spaceship's hitbox collides with an asteroid.
             // If so, kill the asteroid and play an explosion sound.
 
@@ -361,8 +360,7 @@ private:
 
     void cleanupDeadBullets() {
         // =====
-        // TODO: What should we do with dead bullet objects? Just keep them lying around taking up
-        // space in memory?
+        // Free bullets
         std::vector<Bullet> aux;
         aux.reserve(mBullets.size());
         for (const auto& bullet : mBullets) {

@@ -21,5 +21,5 @@ A:
 By separating the input summary of the window and the rest of the game state, the overarching functionality
 is more organized and easier to manage. Separating the player inputs with SFML allows us a space to modify/test/process everything
 that is happening regarding the inputs of the user during the game, all together in one place and without extra noise. 
-Likewise, the game state allows us to handle the window, close the window when the game is finished, etc. without 
-having to sort through the lines of code that handle in-game mechanics.
+Likewise, the game state allows us to handle the window, close the window when the game is finished, more of the actual
+functionality of the game etc. without having to sort through the lines of code that handle in-game mechanics.
