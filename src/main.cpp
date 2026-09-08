@@ -138,18 +138,20 @@ struct Bullet : public sf::Drawable {
 
     void update() {
         // =====
-        // TODO: Implement bullet update mechanics. In detail:
+        // Bullet update mechanics.
         //  - Move bullet's shape using bullet's velocity
+        shape.move(velocity);
         //  - Decrease bullet lifetime by 1.0f / 60.0f (60 FPS)
         //  - Mark bullets as dead (bullet.isAlive = false) if:
-        //      - lifetime <= 0.0f, or
-        //      - bullet is off screen (use shape.getPosition() and
-        //        WINDOW_WIDTH and WINDOW_HEIGHT)
-        shape.move(velocity);
+        //      - lifetime <= 0.0f
         lifetime -= 1.0f / 60.0f;
         if (lifetime <= 0.0f) {
             isAlive = false;
         }
+
+        // OR
+        //      - bullet is off screen (use shape.getPosition() and
+        //        WINDOW_WIDTH and WINDOW_HEIGHT)
         sf::Vector2f bulletPos = shape.getPosition();
         // bullets areoff screen if their center is outside the window bounds
         if (bulletPos.x < 0 || bulletPos.x > static_cast<float>(WINDOW_WIDTH) ||
@@ -254,18 +256,16 @@ public:
         mSpaceship.setRotation(sf::radians(angleRadians + M_PI / 2));
         // --- Shooting ---
         // =====
-        // TODO: Implement shooting mechanics, keeping in mind the shooting cooldown. In detail:
-        //  - Consider whether the user wants to shoot, and also the cooldown.
-        //  - Bullet direction is the same as the spaceship's facing direction.
-        //  - Bullet should be shot from the current spaceship position.
-        if (inputSummary.shootingDesired){
+        // Implement shooting mechanics, keeping in mind the shooting cooldown. In detail:
+        //  
+        if (inputSummary.shootingDesired){ // - Consider whether the user wants to shoot, and also the cooldown.
             if (mShootClock.getElapsedTime().asSeconds() >= SHOOT_COOLDOWN){
                 // normalize the facing vector to get the direction of the bullet
-                sf::Vector2f bulletDirection = facingVector.normalized();
+                sf::Vector2f bulletDirection = facingVector.normalized(); // - Bullet direction is the same as the spaceship's facing direction.
                 sf::Vector2f bulletVelocity = bulletDirection * BULLET_SPEED;
 
                 // add a new bullet to the bullets vector
-                mBullets.emplace_back(mSpaceship.getPosition(), bulletVelocity);
+                mBullets.emplace_back(mSpaceship.getPosition(), bulletVelocity); // - Bullet should be shot from the current spaceship position.
                 mShootClock.restart();
             }
         }
@@ -317,7 +317,6 @@ private:
                                      asteroid.shape.getPosition(), asteroid.shape.getRadius())) {
                     bullet.isAlive = false;
                     asteroid.isAlive = false;
-                    // TODO: Add Explosion Sound Effect
                     // Play explosion sound!
                     mExplosionSound.play();
                     break;  // Bullet can only hit one asteroid
