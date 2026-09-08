@@ -145,6 +145,17 @@ struct Bullet : public sf::Drawable {
         //      - lifetime <= 0.0f, or
         //      - bullet is off screen (use shape.getPosition() and
         //        WINDOW_WIDTH and WINDOW_HEIGHT)
+        shape.move(velocity);
+        lifetime -= 1.0f / 60.0f;
+        if (lifetime <= 0.0f) {
+            isAlive = false;
+        }
+        sf::Vector2f bulletPos = shape.getPosition();
+        // bullets areoff screen if their center is outside the window bounds
+        if (bulletPos.x < 0 || bulletPos.x > static_cast<float>(WINDOW_WIDTH) ||
+            bulletPos.y < 0 || bulletPos.y > static_cast<float>(WINDOW_HEIGHT)) {
+            isAlive = false;
+        }
 
     }
 
@@ -252,7 +263,7 @@ public:
                 // normalize the facing vector to get the direction of the bullet
                 sf::Vector2f bulletDirection = facingVector.normalized();
                 sf::Vector2f bulletVelocity = bulletDirection * BULLET_SPEED;
-                
+
                 // add a new bullet to the bullets vector
                 mBullets.emplace_back(mSpaceship.getPosition(), bulletVelocity);
                 mShootClock.restart();
