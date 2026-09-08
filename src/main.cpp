@@ -319,7 +319,7 @@ private:
                     asteroid.isAlive = false;
                     // TODO: Add Explosion Sound Effect
                     // Play explosion sound!
-
+                    mExplosionSound.play();
                     break;  // Bullet can only hit one asteroid
                 }
             }
