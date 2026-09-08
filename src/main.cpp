@@ -145,6 +145,7 @@ struct Bullet : public sf::Drawable {
         //      - lifetime <= 0.0f, or
         //      - bullet is off screen (use shape.getPosition() and
         //        WINDOW_WIDTH and WINDOW_HEIGHT)
+
     }
 
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override {
@@ -246,6 +247,17 @@ public:
         //  - Consider whether the user wants to shoot, and also the cooldown.
         //  - Bullet direction is the same as the spaceship's facing direction.
         //  - Bullet should be shot from the current spaceship position.
+        if (inputSummary.shootingDesired){
+            if (mShootClock.getElapsedTime().asSeconds() >= SHOOT_COOLDOWN){
+                // normalize the facing vector to get the direction of the bullet
+                sf::Vector2f bulletDirection = facingVector.normalized();
+                sf::Vector2f bulletVelocity = bulletDirection * BULLET_SPEED;
+                
+                // add a new bullet to the bullets vector
+                mBullets.emplace_back(mSpaceship.getPosition(), bulletVelocity);
+                mShootClock.restart();
+            }
+        }
 
         // --- Update Asteroids ---
         for (auto& asteroid : mAsteroids) {
